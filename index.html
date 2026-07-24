@@ -8,11 +8,14 @@
         :root {
             --primary: #4a90e2;
             --primary-dark: #357abd;
+            --purple: #8e44ad;
+            --purple-dark: #71368a;
+            --orange: #e67e22;
+            --orange-dark: #d35400;
             --success: #2ecc71;
             --success-dark: #27ae60;
             --danger: #e74c3c;
             --danger-dark: #c0392b;
-            --accent: #f39c12;
             --dark: #1a252f;
             --light-bg: #f0f4f8;
             --card-bg: #ffffff;
@@ -43,14 +46,37 @@
             border-radius: 24px;
             box-shadow: 0 12px 30px rgba(0,0,0,0.08);
             text-align: center;
+            position: relative;
+        }
+
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
         }
 
         h1 {
-            margin: 0 0 20px 0;
-            font-size: 26px;
+            margin: 0;
+            font-size: 24px;
             font-weight: 800;
-            color: var(--primary);
+            color: var(--dark);
             letter-spacing: -0.5px;
+            text-align: left;
+        }
+
+        .mute-btn {
+            background: #e2e8f0;
+            border: none;
+            font-size: 18px;
+            padding: 8px 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .mute-btn:active {
+            background: #cbd5e1;
         }
 
         .hidden { display: none !important; }
@@ -65,51 +91,89 @@
         }
 
         .setup-section-title {
-            margin: 0 0 8px 0;
+            margin: 0 0 10px 0;
             color: #475569;
-            font-size: 14px;
+            font-size: 13px;
             text-transform: uppercase;
             letter-spacing: 0.8px;
             font-weight: 700;
+            text-align: left;
         }
 
+        /* Mode Selection Colorful Buttons */
         .mode-selector {
             display: flex;
             gap: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 22px;
         }
 
         .mode-btn {
             flex: 1;
-            padding: 10px 5px;
+            padding: 12px 5px;
             font-size: 13px;
-            font-weight: 700;
-            border: 2px solid #cbd5e1;
-            background: white;
-            color: #64748b;
-            border-radius: 12px;
+            font-weight: 800;
+            border: none;
+            border-radius: 14px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.15s ease;
+            color: white;
+            opacity: 0.55;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.15);
         }
 
+        .mode-btn.btn-std { background-color: var(--primary); }
+        .mode-btn.btn-len { background-color: var(--purple); }
+        .mode-btn.btn-cat { background-color: var(--orange); }
+
         .mode-btn.active {
-            border-color: var(--primary);
-            background-color: #eff6ff;
-            color: var(--primary);
+            opacity: 1;
+            transform: scale(1.03);
+            box-shadow: 0 6px 0 rgba(0,0,0,0.25);
+        }
+
+        /* Quick-Add Player Chips */
+        .quick-players {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .chip-btn {
+            background: #e2e8f0;
+            color: #334155;
+            border: 1px solid #cbd5e1;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .chip-btn:active {
+            background: #cbd5e1;
+        }
+
+        .chip-btn.added {
+            background: #cbd5e1;
+            color: #94a3b8;
+            border-color: #cbd5e1;
+            text-decoration: line-through;
+            cursor: default;
         }
 
         .setup-group {
             display: flex;
             gap: 8px;
-            margin-top: 10px;
         }
 
         input[type="text"] {
             flex: 1;
-            padding: 14px 16px;
+            padding: 12px 16px;
             border: 2px solid #e2e8f0;
             border-radius: 12px;
-            font-size: 16px;
+            font-size: 15px;
             outline: none;
             transition: border-color 0.2s;
         }
@@ -138,45 +202,64 @@
         .btn {
             border: none;
             color: white;
-            font-weight: 700;
+            font-weight: 800;
             border-radius: 14px;
             cursor: pointer;
             transition: transform 0.1s, box-shadow 0.1s;
             user-select: none;
         }
 
-        .btn-primary {
-            background-color: var(--primary);
-            box-shadow: 0 5px 0 var(--primary-dark);
-        }
-
-        .btn-primary:active {
-            transform: translateY(3px);
-            box-shadow: 0 2px 0 var(--primary-dark);
-        }
-
-        .btn-main {
+        .btn-start {
+            background-color: var(--success);
+            box-shadow: 0 6px 0 var(--success-dark);
             width: 100%;
-            font-size: 18px;
+            font-size: 20px;
             padding: 16px;
             margin-top: 10px;
         }
 
-        .btn-main:disabled {
+        .btn-start:active {
+            transform: translateY(3px);
+            box-shadow: 0 3px 0 var(--success-dark);
+        }
+
+        .btn-start:disabled {
             background-color: #cbd5e1;
             box-shadow: 0 5px 0 #94a3b8;
             cursor: not-allowed;
             transform: none;
         }
 
+        .btn-change-mode {
+            background: #e2e8f0;
+            color: #475569;
+            font-size: 13px;
+            padding: 8px 16px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .btn-change-mode:active {
+            background: #cbd5e1;
+        }
+
         /* --- GAMEPLAY DISPLAYS --- */
-        
+        .game-title-sub {
+            font-size: 14px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
         /* Standard Mode */
         .letter-display {
             display: flex;
             justify-content: space-between;
             gap: 15px;
-            margin: 25px 0;
+            margin: 15px 0 25px 0;
         }
 
         .letter-box {
@@ -204,9 +287,9 @@
             text-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
-        /* Word Length Mode Tiles */
+        /* Word Length Mode */
         .wordle-container {
-            margin: 30px 0;
+            margin: 20px 0 30px 0;
         }
 
         .wordle-grid {
@@ -231,9 +314,9 @@
         }
 
         .wordle-tile.filled {
-            background: linear-gradient(145deg, #4a90e2, #357abd);
+            background: linear-gradient(145deg, #8e44ad, #71368a);
             color: white;
-            box-shadow: 0 6px 12px rgba(74, 144, 226, 0.3);
+            box-shadow: 0 6px 12px rgba(142, 68, 173, 0.3);
         }
 
         .wordle-tile.empty {
@@ -245,13 +328,13 @@
         .plus-badge {
             font-size: 28px;
             font-weight: 900;
-            color: var(--primary);
+            color: var(--purple);
             margin-left: 2px;
         }
 
-        /* Categories Mode Display */
+        /* Categories Mode */
         .category-container {
-            margin: 25px 0;
+            margin: 20px 0 30px 0;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -261,25 +344,25 @@
         .single-letter-tile {
             background: linear-gradient(145deg, #2c3e50, #1a252f);
             color: white;
-            width: 110px;
-            height: 110px;
-            border-radius: 24px;
+            width: 100px;
+            height: 100px;
+            border-radius: 22px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 68px;
+            font-size: 64px;
             font-weight: 900;
             box-shadow: 0 10px 20px rgba(0,0,0,0.15);
         }
 
         .category-badge {
-            background: linear-gradient(135deg, #f39c12, #d35400);
+            background: linear-gradient(135deg, #e67e22, #d35400);
             color: white;
             padding: 14px 22px;
             border-radius: 16px;
             font-size: 20px;
             font-weight: 800;
-            box-shadow: 0 6px 15px rgba(243, 156, 18, 0.25);
+            box-shadow: 0 6px 15px rgba(230, 126, 34, 0.3);
             letter-spacing: -0.2px;
             max-width: 100%;
         }
@@ -309,7 +392,7 @@
 
         /* --- SCOREBOARD --- */
         .scoreboard {
-            margin-top: 35px;
+            margin-top: 30px;
             border-top: 2px solid #f1f5f9;
             padding-top: 20px;
         }
@@ -391,30 +474,37 @@
 <body>
 
 <div class="container">
-    <h1>Starts With / Ends With</h1>
+    <div class="header-bar">
+        <h1>Starts With...</h1>
+        <button id="mute-toggle" class="mute-btn" onclick="toggleMute()">🔊</button>
+    </div>
 
     <!-- SCREEN 1: START/SETUP -->
     <div id="setup-screen">
         <div class="setup-card">
             <div class="setup-section-title">Select Game Mode</div>
             <div class="mode-selector">
-                <button class="mode-btn active" onclick="setMode('standard')">Standard</button>
-                <button class="mode-btn" onclick="setMode('length')">Word Length</button>
-                <button class="mode-btn" onclick="setMode('categories')">Categories</button>
+                <button class="mode-btn btn-std active" onclick="setMode('standard')">Standard</button>
+                <button class="mode-btn btn-len" onclick="setMode('length')">Word Length</button>
+                <button class="mode-btn btn-cat" onclick="setMode('categories')">Categories</button>
             </div>
 
-            <div class="setup-section-title">Add Players</div>
+            <div class="setup-section-title">Quick Add Players</div>
+            <div class="quick-players" id="quick-players-container"></div>
+
+            <div class="setup-section-title">Add Other Players</div>
             <div class="setup-group">
                 <input type="text" id="player-input" placeholder="Player name...">
-                <button class="btn btn-primary" onclick="addPlayer()" style="padding: 0 20px;">Add</button>
+                <button class="btn" style="background-color: var(--primary); padding: 0 20px; box-shadow: 0 4px 0 var(--primary-dark);" onclick="addPlayerFromInput()">Add</button>
             </div>
             <ul id="player-list" class="player-list"></ul>
         </div>
-        <button id="start-btn" class="btn btn-primary btn-main" onclick="startGame()" disabled>Start Game</button>
+        <button id="start-btn" class="btn btn-start" onclick="startGame()" disabled>Start Game</button>
     </div>
 
     <!-- SCREEN 2: GAMEPLAY -->
     <div id="game-screen" class="hidden">
+        <button class="btn btn-change-mode" onclick="returnToSetup()">⚙️ Change Game Mode</button>
         
         <!-- Standard Mode Layout -->
         <div id="mode-standard" class="letter-display">
@@ -430,12 +520,13 @@
 
         <!-- Word Length Mode Layout -->
         <div id="mode-length" class="wordle-container hidden">
-            <div class="setup-section-title" id="length-title">Word Length: 4 Letters</div>
+            <div class="game-title-sub">Starts with...</div>
             <div class="wordle-grid" id="wordle-grid"></div>
         </div>
 
         <!-- Categories Mode Layout -->
         <div id="mode-categories" class="category-container hidden">
+            <div class="game-title-sub" style="margin-bottom:0;">Starts with...</div>
             <div class="single-letter-tile pop" id="cat-letter">A</div>
             <div class="category-badge pop" id="cat-name">TV Show</div>
         </div>
@@ -450,10 +541,11 @@
 </div>
 
 <script>
-    // Game Configurations
+    // Config Lists
     const startsWithLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'V', 'W', 'Y'];
     const endsWithLetters = ['A', 'D', 'E', 'G', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'Y'];
-    const wordLengths = [3, 4, 5, 6]; // 6 represents 6+
+    const wordLengths = [3, 4, 5, 6]; 
+    const defaultPlayerNames = ["Dan", "Mandie", "Sam", "Andrew", "Elijah", "Sophia", "Violette"];
 
     const categoriesList = [
         "TV Show", "Movie", "Celebrity", "City", "Country", "Band / Singer", "Food", 
@@ -473,6 +565,16 @@
     let currentMode = 'standard';
     let players = [];
     let audioCtx = null;
+    let isMuted = false;
+
+    // Initialize Default Quick-Add Chips
+    function initQuickPlayers() {
+        const container = document.getElementById('quick-players-container');
+        container.innerHTML = defaultPlayerNames.map(name => `
+            <button class="chip-btn" id="chip-${name}" onclick="addQuickPlayer('${name}')">+ ${name}</button>
+        `).join('');
+    }
+    initQuickPlayers();
 
     // Mode Selector Handler
     function setMode(mode) {
@@ -485,8 +587,15 @@
         if (mode === 'categories') buttons[2].classList.add('active');
     }
 
-    // Web Audio Synthesizer
+    // Audio & Mute Logic
+    function toggleMute() {
+        isMuted = !isMuted;
+        document.getElementById('mute-toggle').innerText = isMuted ? '🔇' : '🔊';
+    }
+
     function playAudio(type) {
+        if (isMuted) return;
+
         if (!audioCtx) {
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         }
@@ -520,22 +629,39 @@
         }
     }
 
-    // Add Player Logic
-    function addPlayer() {
-        const input = document.getElementById('player-input');
-        const name = input.value.trim();
-        
+    // Player Management
+    function addPlayerByName(name) {
         if (name && !players.some(p => p.name === name)) {
             players.push({ name: name, score: 0 });
-            input.value = '';
             updatePlayerList();
             document.getElementById('start-btn').disabled = false;
+
+            // Update chip state if applicable
+            const chip = document.getElementById(`chip-${name}`);
+            if (chip) {
+                chip.classList.add('added');
+                chip.innerText = `✓ ${name}`;
+                chip.onclick = null;
+            }
+        }
+    }
+
+    function addQuickPlayer(name) {
+        addPlayerByName(name);
+    }
+
+    function addPlayerFromInput() {
+        const input = document.getElementById('player-input');
+        const name = input.value.trim();
+        if (name) {
+            addPlayerByName(name);
+            input.value = '';
         }
         input.focus();
     }
 
     document.getElementById('player-input').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') addPlayer();
+        if (e.key === 'Enter') addPlayerFromInput();
     });
 
     function updatePlayerList() {
@@ -543,20 +669,24 @@
         list.innerHTML = players.map(p => `<li>${p.name}</li>`).join('');
     }
 
+    // Navigation & Gameplay
     function startGame() {
         document.getElementById('setup-screen').classList.add('hidden');
         document.getElementById('game-screen').classList.remove('hidden');
 
-        // Hide all mode displays first
         document.getElementById('mode-standard').classList.add('hidden');
         document.getElementById('mode-length').classList.add('hidden');
         document.getElementById('mode-categories').classList.add('hidden');
 
-        // Show selected mode container
         document.getElementById(`mode-${currentMode}`).classList.remove('hidden');
 
         renderScoreboard();
         nextRound();
+    }
+
+    function returnToSetup() {
+        document.getElementById('game-screen').classList.add('hidden');
+        document.getElementById('setup-screen').classList.remove('hidden');
     }
 
     function nextRound() {
@@ -580,10 +710,7 @@
         } else if (currentMode === 'length') {
             const chosenLength = wordLengths[Math.floor(Math.random() * wordLengths.length)];
             const gridContainer = document.getElementById('wordle-grid');
-            const titleEl = document.getElementById('length-title');
 
-            titleEl.innerText = chosenLength === 6 ? "Word Length: 6+ Letters" : `Word Length: ${chosenLength} Letters`;
-            
             let gridHTML = `<div class="wordle-tile filled pop">${randomStart}</div>`;
             for (let i = 1; i < chosenLength; i++) {
                 gridHTML += `<div class="wordle-tile empty pop"></div>`;
