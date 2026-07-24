@@ -292,25 +292,13 @@
             margin: 15px 0 25px 0;
         }
 
-        .length-count-badge {
-            display: inline-block;
-            background: #f1f5f9;
-            color: var(--purple);
-            border: 2px solid #e2e8f0;
-            font-size: 16px;
-            font-weight: 800;
-            padding: 6px 16px;
-            border-radius: 20px;
-            margin-top: 4px;
-            margin-bottom: 12px;
-        }
-
         .wordle-grid {
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 6px;
             width: 100%;
+            margin-top: 10px;
         }
 
         .wordle-tile {
@@ -344,6 +332,18 @@
             color: var(--purple);
             font-size: 24px;
             font-weight: 900;
+        }
+
+        .length-count-badge {
+            display: inline-block;
+            background: #f1f5f9;
+            color: var(--purple);
+            border: 2px solid #e2e8f0;
+            font-size: 16px;
+            font-weight: 800;
+            padding: 6px 16px;
+            border-radius: 20px;
+            margin-top: 14px;
         }
 
         /* Categories Mode */
@@ -535,8 +535,8 @@
         <!-- Word Length Mode Layout -->
         <div id="mode-length" class="wordle-container hidden">
             <div class="game-title-sub" style="margin-bottom:0;">Starts with...</div>
-            <div class="length-count-badge pop" id="length-badge">4 Letters</div>
             <div class="wordle-grid" id="wordle-grid"></div>
+            <div class="length-count-badge pop" id="length-badge">Word Length: 4 Letters</div>
         </div>
 
         <!-- Categories Mode Layout -->
@@ -726,8 +726,8 @@
             const gridContainer = document.getElementById('wordle-grid');
             const badgeEl = document.getElementById('length-badge');
 
-            // Update Text Badge
-            badgeEl.innerText = chosenLength === 6 ? "6+ Letters Required" : `${chosenLength} Letters Required`;
+            // Update Text Badge under tiles
+            badgeEl.innerText = chosenLength === 6 ? "Word Length: 6+ Letters" : `Word Length: ${chosenLength} Letters`;
 
             // Build Tiles
             let gridHTML = `<div class="wordle-tile filled pop">${randomStart}</div>`;
