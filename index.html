@@ -289,47 +289,61 @@
 
         /* Word Length Mode */
         .wordle-container {
-            margin: 20px 0 30px 0;
+            margin: 15px 0 25px 0;
+        }
+
+        .length-count-badge {
+            display: inline-block;
+            background: #f1f5f9;
+            color: var(--purple);
+            border: 2px solid #e2e8f0;
+            font-size: 16px;
+            font-weight: 800;
+            padding: 6px 16px;
+            border-radius: 20px;
+            margin-top: 4px;
+            margin-bottom: 12px;
         }
 
         .wordle-grid {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-top: 15px;
+            gap: 6px;
+            width: 100%;
         }
 
         .wordle-tile {
-            width: 52px;
-            height: 60px;
-            border-radius: 12px;
+            width: 44px;
+            height: 52px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 32px;
+            font-size: 26px;
             font-weight: 800;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.06);
+            position: relative;
         }
 
         .wordle-tile.filled {
             background: linear-gradient(145deg, #8e44ad, #71368a);
             color: white;
-            box-shadow: 0 6px 12px rgba(142, 68, 173, 0.3);
+            box-shadow: 0 5px 10px rgba(142, 68, 173, 0.3);
         }
 
         .wordle-tile.empty {
-            border: 3px dashed #cbd5e1;
+            border: 2px dashed #cbd5e1;
             background: #f8fafc;
             color: transparent;
         }
 
-        .plus-badge {
-            font-size: 28px;
-            font-weight: 900;
+        .wordle-tile.plus-tile {
+            border: 2px dashed var(--purple);
+            background: #f3e8ff;
             color: var(--purple);
-            margin-left: 2px;
+            font-size: 24px;
+            font-weight: 900;
         }
 
         /* Categories Mode */
@@ -520,7 +534,8 @@
 
         <!-- Word Length Mode Layout -->
         <div id="mode-length" class="wordle-container hidden">
-            <div class="game-title-sub">Starts with...</div>
+            <div class="game-title-sub" style="margin-bottom:0;">Starts with...</div>
+            <div class="length-count-badge pop" id="length-badge">4 Letters</div>
             <div class="wordle-grid" id="wordle-grid"></div>
         </div>
 
@@ -636,7 +651,6 @@
             updatePlayerList();
             document.getElementById('start-btn').disabled = false;
 
-            // Update chip state if applicable
             const chip = document.getElementById(`chip-${name}`);
             if (chip) {
                 chip.classList.add('added');
@@ -710,16 +724,27 @@
         } else if (currentMode === 'length') {
             const chosenLength = wordLengths[Math.floor(Math.random() * wordLengths.length)];
             const gridContainer = document.getElementById('wordle-grid');
+            const badgeEl = document.getElementById('length-badge');
 
+            // Update Text Badge
+            badgeEl.innerText = chosenLength === 6 ? "6+ Letters Required" : `${chosenLength} Letters Required`;
+
+            // Build Tiles
             let gridHTML = `<div class="wordle-tile filled pop">${randomStart}</div>`;
-            for (let i = 1; i < chosenLength; i++) {
+            const emptyBoxesCount = chosenLength === 6 ? 5 : chosenLength - 1;
+
+            for (let i = 0; i < emptyBoxesCount; i++) {
                 gridHTML += `<div class="wordle-tile empty pop"></div>`;
             }
             if (chosenLength === 6) {
-                gridHTML += `<span class="plus-badge pop">+</span>`;
+                gridHTML += `<div class="wordle-tile plus-tile pop">+</div>`;
             }
 
             gridContainer.innerHTML = gridHTML;
+
+            badgeEl.classList.remove('pop');
+            void badgeEl.offsetWidth;
+            badgeEl.classList.add('pop');
 
         } else if (currentMode === 'categories') {
             const randomCategory = categoriesList[Math.floor(Math.random() * categoriesList.length)];
