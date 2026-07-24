@@ -12,6 +12,7 @@
             --success-dark: #27ae60;
             --danger: #e74c3c;
             --danger-dark: #c0392b;
+            --accent: #f39c12;
             --dark: #1a252f;
             --light-bg: #f0f4f8;
             --card-bg: #ffffff;
@@ -63,6 +64,40 @@
             margin-bottom: 20px;
         }
 
+        .setup-section-title {
+            margin: 0 0 8px 0;
+            color: #475569;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-weight: 700;
+        }
+
+        .mode-selector {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 10px 5px;
+            font-size: 13px;
+            font-weight: 700;
+            border: 2px solid #cbd5e1;
+            background: white;
+            color: #64748b;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .mode-btn.active {
+            border-color: var(--primary);
+            background-color: #eff6ff;
+            color: var(--primary);
+        }
+
         .setup-group {
             display: flex;
             gap: 8px;
@@ -97,9 +132,6 @@
             margin-bottom: 8px;
             font-weight: 600;
             border: 1px solid #e2e8f0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
 
         /* --- BUTTONS --- */
@@ -137,7 +169,9 @@
             transform: none;
         }
 
-        /* --- GAMEPLAY SCREEN --- */
+        /* --- GAMEPLAY DISPLAYS --- */
+        
+        /* Standard Mode */
         .letter-display {
             display: flex;
             justify-content: space-between;
@@ -168,6 +202,86 @@
             margin-top: 5px;
             line-height: 1;
             text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        /* Word Length Mode Tiles */
+        .wordle-container {
+            margin: 30px 0;
+        }
+
+        .wordle-grid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .wordle-tile {
+            width: 52px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 800;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+        }
+
+        .wordle-tile.filled {
+            background: linear-gradient(145deg, #4a90e2, #357abd);
+            color: white;
+            box-shadow: 0 6px 12px rgba(74, 144, 226, 0.3);
+        }
+
+        .wordle-tile.empty {
+            border: 3px dashed #cbd5e1;
+            background: #f8fafc;
+            color: transparent;
+        }
+
+        .plus-badge {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--primary);
+            margin-left: 2px;
+        }
+
+        /* Categories Mode Display */
+        .category-container {
+            margin: 25px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .single-letter-tile {
+            background: linear-gradient(145deg, #2c3e50, #1a252f);
+            color: white;
+            width: 110px;
+            height: 110px;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 68px;
+            font-weight: 900;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        .category-badge {
+            background: linear-gradient(135deg, #f39c12, #d35400);
+            color: white;
+            padding: 14px 22px;
+            border-radius: 16px;
+            font-size: 20px;
+            font-weight: 800;
+            box-shadow: 0 6px 15px rgba(243, 156, 18, 0.25);
+            letter-spacing: -0.2px;
+            max-width: 100%;
         }
 
         /* Pop Animation */
@@ -202,7 +316,7 @@
 
         .scoreboard h3 {
             margin: 0 0 15px 0;
-            font-size: 16px;
+            font-size: 14px;
             color: #64748b;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -282,7 +396,14 @@
     <!-- SCREEN 1: START/SETUP -->
     <div id="setup-screen">
         <div class="setup-card">
-            <h3 style="margin:0 0 10px 0; color:#475569;">Add Players</h3>
+            <div class="setup-section-title">Select Game Mode</div>
+            <div class="mode-selector">
+                <button class="mode-btn active" onclick="setMode('standard')">Standard</button>
+                <button class="mode-btn" onclick="setMode('length')">Word Length</button>
+                <button class="mode-btn" onclick="setMode('categories')">Categories</button>
+            </div>
+
+            <div class="setup-section-title">Add Players</div>
             <div class="setup-group">
                 <input type="text" id="player-input" placeholder="Player name...">
                 <button class="btn btn-primary" onclick="addPlayer()" style="padding: 0 20px;">Add</button>
@@ -294,7 +415,9 @@
 
     <!-- SCREEN 2: GAMEPLAY -->
     <div id="game-screen" class="hidden">
-        <div class="letter-display">
+        
+        <!-- Standard Mode Layout -->
+        <div id="mode-standard" class="letter-display">
             <div class="letter-box">
                 <h2>Starts With</h2>
                 <div class="letter" id="start-letter">-</div>
@@ -303,6 +426,18 @@
                 <h2>Ends With</h2>
                 <div class="letter" id="end-letter">-</div>
             </div>
+        </div>
+
+        <!-- Word Length Mode Layout -->
+        <div id="mode-length" class="wordle-container hidden">
+            <div class="setup-section-title" id="length-title">Word Length: 4 Letters</div>
+            <div class="wordle-grid" id="wordle-grid"></div>
+        </div>
+
+        <!-- Categories Mode Layout -->
+        <div id="mode-categories" class="category-container hidden">
+            <div class="single-letter-tile pop" id="cat-letter">A</div>
+            <div class="category-badge pop" id="cat-name">TV Show</div>
         </div>
 
         <button class="btn btn-next" onclick="nextRound()">Next Round 🎲</button>
@@ -315,14 +450,42 @@
 </div>
 
 <script>
-    // Game Configuration - Option 2: Balanced Mix Pool
+    // Game Configurations
     const startsWithLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'V', 'W', 'Y'];
     const endsWithLetters = ['A', 'D', 'E', 'G', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'Y'];
+    const wordLengths = [3, 4, 5, 6]; // 6 represents 6+
 
+    const categoriesList = [
+        "TV Show", "Movie", "Celebrity", "City", "Country", "Band / Singer", "Food", 
+        "Beverage", "Song Title", "Job", "Game", "Items Around the House", "Items in the Kitchen", 
+        "Items at the Beach", "Nature", "Book", "Fictional Character", "Actor", "Actress", 
+        "Restaurant", "Something Hot", "TV Channel", "Something Red", "Something Blue", 
+        "Something Green", "Emotion", "Car Term", "Body of Water", "Toys", "At the Circus", 
+        "Herbs & Spices", "Meats", "Boy Name", "Girl Name", "Company", "Athlete", "Animal", 
+        "Tool", "Hobby", "Author", "Award", "Dog Breed", "Superhero", "In the Garden", 
+        "Something You See", "Adjective", "Noun", "Verb", "Body Part", "Dessert", 
+        "On a Farm", "Villain", "Computer Term", "Car or Truck", "Something Yellow", 
+        "Street Name", "Fruit or Veggie", "Something at Costco", "Color", "Olympic Term", 
+        "Weather Term", "Candy", "Historical Figure", "Ice Cream Flavor", "Holiday", 
+        "Video Game", "Bird", "Wedding Term", "Pizza Topping", "Pet Name", "Cartoon"
+    ];
+
+    let currentMode = 'standard';
     let players = [];
     let audioCtx = null;
 
-    // Web Audio Synthesizer (Instant native sound effects)
+    // Mode Selector Handler
+    function setMode(mode) {
+        currentMode = mode;
+        const buttons = document.querySelectorAll('.mode-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        
+        if (mode === 'standard') buttons[0].classList.add('active');
+        if (mode === 'length') buttons[1].classList.add('active');
+        if (mode === 'categories') buttons[2].classList.add('active');
+    }
+
+    // Web Audio Synthesizer
     function playAudio(type) {
         if (!audioCtx) {
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -339,7 +502,6 @@
         const now = audioCtx.currentTime;
 
         if (type === 'next') {
-            // Pop sound
             osc.type = 'sine';
             osc.frequency.setValueAtTime(350, now);
             osc.frequency.exponentialRampToValueAtTime(700, now + 0.08);
@@ -348,10 +510,9 @@
             osc.start(now);
             osc.stop(now + 0.08);
         } else if (type === 'point') {
-            // High chime sound
             osc.type = 'triangle';
-            osc.frequency.setValueAtTime(523.25, now); // C5
-            osc.frequency.setValueAtTime(659.25, now + 0.06); // E5
+            osc.frequency.setValueAtTime(523.25, now);
+            osc.frequency.setValueAtTime(659.25, now + 0.06);
             gain.gain.setValueAtTime(0.15, now);
             gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
             osc.start(now);
@@ -359,7 +520,7 @@
         }
     }
 
-    // Add player to the setup list
+    // Add Player Logic
     function addPlayer() {
         const input = document.getElementById('player-input');
         const name = input.value.trim();
@@ -385,28 +546,68 @@
     function startGame() {
         document.getElementById('setup-screen').classList.add('hidden');
         document.getElementById('game-screen').classList.remove('hidden');
+
+        // Hide all mode displays first
+        document.getElementById('mode-standard').classList.add('hidden');
+        document.getElementById('mode-length').classList.add('hidden');
+        document.getElementById('mode-categories').classList.add('hidden');
+
+        // Show selected mode container
+        document.getElementById(`mode-${currentMode}`).classList.remove('hidden');
+
         renderScoreboard();
         nextRound();
     }
 
     function nextRound() {
         playAudio('next');
-
         const randomStart = startsWithLetters[Math.floor(Math.random() * startsWithLetters.length)];
-        const randomEnd = endsWithLetters[Math.floor(Math.random() * endsWithLetters.length)];
-        
-        const startEl = document.getElementById('start-letter');
-        const endEl = document.getElementById('end-letter');
 
-        startEl.innerText = randomStart;
-        endEl.innerText = randomEnd;
+        if (currentMode === 'standard') {
+            const randomEnd = endsWithLetters[Math.floor(Math.random() * endsWithLetters.length)];
+            const startEl = document.getElementById('start-letter');
+            const endEl = document.getElementById('end-letter');
 
-        // Trigger popping animation
-        startEl.classList.remove('pop');
-        endEl.classList.remove('pop');
-        void startEl.offsetWidth; // Force CSS reflow
-        startEl.classList.add('pop');
-        endEl.classList.add('pop');
+            startEl.innerText = randomStart;
+            endEl.innerText = randomEnd;
+
+            startEl.classList.remove('pop');
+            endEl.classList.remove('pop');
+            void startEl.offsetWidth;
+            startEl.classList.add('pop');
+            endEl.classList.add('pop');
+
+        } else if (currentMode === 'length') {
+            const chosenLength = wordLengths[Math.floor(Math.random() * wordLengths.length)];
+            const gridContainer = document.getElementById('wordle-grid');
+            const titleEl = document.getElementById('length-title');
+
+            titleEl.innerText = chosenLength === 6 ? "Word Length: 6+ Letters" : `Word Length: ${chosenLength} Letters`;
+            
+            let gridHTML = `<div class="wordle-tile filled pop">${randomStart}</div>`;
+            for (let i = 1; i < chosenLength; i++) {
+                gridHTML += `<div class="wordle-tile empty pop"></div>`;
+            }
+            if (chosenLength === 6) {
+                gridHTML += `<span class="plus-badge pop">+</span>`;
+            }
+
+            gridContainer.innerHTML = gridHTML;
+
+        } else if (currentMode === 'categories') {
+            const randomCategory = categoriesList[Math.floor(Math.random() * categoriesList.length)];
+            const letterEl = document.getElementById('cat-letter');
+            const catEl = document.getElementById('cat-name');
+
+            letterEl.innerText = randomStart;
+            catEl.innerText = randomCategory;
+
+            letterEl.classList.remove('pop');
+            catEl.classList.remove('pop');
+            void letterEl.offsetWidth;
+            letterEl.classList.add('pop');
+            catEl.classList.add('pop');
+        }
     }
 
     function adjustScore(index, amount) {
